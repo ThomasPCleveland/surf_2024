@@ -29,58 +29,94 @@
 #include "RISQTutorialDetectorParameters.hh"
 #include "FTFP_BERT.hh"
 
+#include "PSPhysicsList.hh"
+#include "G4CMPPhysics.hh"
+#include "PSPhysics.hh"
+
+
+
+#include "G4DecayPhysics.hh"
+#include "G4EmStandardPhysics.hh"
+#include "G4EmStandardPhysics_option4.hh"
+#include "G4EmExtraPhysics.hh"
+#include "G4StoppingPhysics.hh"
+
+#include "G4HadronInelasticQBBC.hh"
+#include "G4HadronElasticPhysics.hh"
+#include "G4HadronElasticPhysicsXS.hh"
+#include "G4HadronElasticPhysicsHP.hh"
+#include "G4ChargeExchangePhysics.hh"
+#include "G4IonPhysicsXS.hh"
+#include "G4IonElasticPhysics.hh"
+
+#include "G4OpticalPhysics.hh"
+#include "G4NeutronTrackingCut.hh"
+#include "G4ParallelWorldPhysics.hh"
+#include "G4RadioactiveDecayPhysics.hh"
+#include "PSPhysicsList.hh"
+// #include "CDMSHadronicBiasing.hh"
+
+
 using namespace RISQTutorialDetectorParameters;
 
 int main(int argc,char** argv)
 {
- // Construct the run manager
- //
- G4RunManager * runManager = new G4RunManager;
+  // Construct the run manager
+  //
+  G4RunManager *runManager = new G4RunManager;
 
- // Set mandatory initialization classes
- //
- RISQTutorialDetectorConstruction* detector = new RISQTutorialDetectorConstruction();
- runManager->SetUserInitialization(detector);
+  // Set mandatory initialization classes
+  //
+  RISQTutorialDetectorConstruction* detector = new RISQTutorialDetectorConstruction();
+  runManager->SetUserInitialization(detector);
 
- FTFP_BERT* physics = new FTFP_BERT;  
- physics->RegisterPhysics(new G4CMPPhysics);
- physics->SetCuts();
- runManager->SetUserInitialization(physics);
- 
- // Set user action classes (different for Geant4 10.0)
- //
- runManager->SetUserInitialization(new RISQTutorialActionInitialization);
+  // FTFP_BERT* physics = new FTFP_BERT;  
+  // physics->RegisterPhysics(new G4CMPPhysics);
+  
 
- // Create configuration managers to ensure macro commands exist
- G4CMPConfigManager::Instance();
- RISQTutorialConfigManager::Instance();
+  G4int ver = 0;
+  // physics->RegisterPhysics(new G4EmStandardPhysics(ver));
+  PSPhysicsList *physics = new PSPhysicsList(ver);
 
- // Visualization manager
- //
- G4VisManager* visManager = new G4VisExecutive;
- visManager->Initialize();
- 
- // Get the pointer to the User Interface manager
- //
- G4UImanager* UImanager = G4UImanager::GetUIpointer();  
+  //Custom Physics class I made for g4cmpSecondaryProduction process.
+  //RegisterPhysics(new PSPhysics());
 
- if (argc==1)   // Define UI session for interactive mode
- {
-      G4UIExecutive * ui = new G4UIExecutive(argc,argv);
-      ui->SessionStart();
-      delete ui;
- }
- else           // Batch mode
- {
-   G4String command = "/control/execute ";
-   G4String fileName = argv[1];
-   UImanager->ApplyCommand(command+fileName);
- }
+  runManager->SetUserInitialization(physics);
 
- delete visManager;
- delete runManager;
+  // Set user action classes (different for Geant4 10.0)
+  //
+  runManager->SetUserInitialization(new RISQTutorialActionInitialization);
 
- return 0;
+  // Create configuration managers to ensure macro commands exist
+  G4CMPConfigManager::Instance();
+  RISQTutorialConfigManager::Instance();
+
+  // Visualization manager
+  //
+  G4VisManager* visManager = new G4VisExecutive;
+  visManager->Initialize();
+
+  // Get the pointer to the User Interface manager
+  //
+  G4UImanager* UImanager = G4UImanager::GetUIpointer();  
+
+  if (argc==1)   // Define UI session for interactive mode
+  {
+    G4UIExecutive * ui = new G4UIExecutive(argc,argv);
+    ui->SessionStart();
+    delete ui;
+  }
+  else           // Batch mode
+  {
+    G4String command = "/control/execute ";
+    G4String fileName = argv[1];
+    UImanager->ApplyCommand(command+fileName);
+  }
+
+  delete visManager;
+  delete runManager;
+
+  return 0;
 }
 
 

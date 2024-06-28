@@ -1,5 +1,6 @@
 # Project Specific
-.old_src
+.old_src/
+.original_src/
 .env
 *.eps
 *.log

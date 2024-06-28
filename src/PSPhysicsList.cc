@@ -41,6 +41,37 @@ PSPhysicsList::PSPhysicsList(G4int verbose) : G4VModularPhysicsList() {
     // QBBC Physics
     RegisterPhysics(new G4EmStandardPhysics(ver));
 
+// physics->SetCuts();
+
+  // // Synchroton Radiation & GN Physics
+  // physics->RegisterPhysics(new G4EmExtraPhysics(ver));
+
+  // // Decays
+  // physics->RegisterPhysics(new G4DecayPhysics(ver));
+
+  // // Hadron Physics
+  // physics->RegisterPhysics(new G4HadronElasticPhysicsXS(ver));
+
+  // physics->RegisterPhysics(new G4StoppingPhysics(ver));
+
+  // physics->RegisterPhysics(new G4IonPhysicsXS(ver));
+
+  // physics->RegisterPhysics(new G4IonElasticPhysics(ver));
+
+  // physics->RegisterPhysics(new G4HadronInelasticQBBC(ver));
+
+  // // optical physics
+  // physics->RegisterPhysics(new G4OpticalPhysics(ver));
+
+  // // Neutron tracking cut
+  // physics->RegisterPhysics(new G4NeutronTrackingCut(ver));
+
+  // physics->RegisterPhysics(new G4ParallelWorldPhysics(ver));
+  // physics->RegisterPhysics(new G4RadioactiveDecayPhysics(ver));
+  //  physics->RegisterPhysics(new CDMSHadronicBiasing(ver));
+
+
+
     //// Synchroton Radiation & GN Physics
     //RegisterPhysics(new G4EmExtraPhysics(ver));
 
@@ -58,8 +89,8 @@ PSPhysicsList::PSPhysicsList(G4int verbose) : G4VModularPhysicsList() {
 
     //RegisterPhysics(new G4HadronInelasticQBBC(ver));
 
-    //// optical physics
-    //RegisterPhysics(new G4OpticalPhysics(ver));
+    // optical physics
+    RegisterPhysics(new G4OpticalPhysics(ver));
 
     //// Neutron tracking cut
     //RegisterPhysics(new G4NeutronTrackingCut(ver));

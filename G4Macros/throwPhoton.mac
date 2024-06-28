@@ -34,7 +34,7 @@
 
 # Particle generation
 /gps/number 1
-/gps/particle opticalphoton
+/gps/particle gamma
 /gps/pos/type Point
 /gps/ang/type iso
 /gps/pos/centre 0.0 0.1 0.481 cm 
