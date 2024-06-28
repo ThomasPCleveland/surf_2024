@@ -38,7 +38,7 @@
 /gps/particle phononL
 /gps/pos/type Point
 /gps/ang/type iso
-/gps/pos/centre 0.0 0.1 0.481 cm # halfway between bottom and top of chip
+/gps/pos/centre 0.0 0 0 cm # halfway between bottom and top of chip
 /gps/ene/type Mono
 /gps/energy 0.03 eV
 /run/beamOn 1
