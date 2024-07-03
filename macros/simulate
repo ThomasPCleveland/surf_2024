@@ -1,0 +1,28 @@
+/run/initialize
+/tracking/verbose 0
+/run/printProgress 1
+
+# particle
+
+
+/g4cmp/phononBounces 1000
+
+# #Now we generate from a volume instead of a point
+# /gps/pos/type Volume
+# /gps/pos/shape Para
+# /random/setSeeds 1
+# /gps/ang/type iso
+# /gps/pos/centre 0.0 0.0 0.48095 cm # halfway between bottom and top of chip # Default
+# /gps/pos/halfx 4.0 mm  #Chip half-width
+# /gps/pos/halfy 4.0 mm  #Chip half-width
+# /gps/pos/halfz 0.19 mm #Chip half-thickness
+
+# #Select energies
+/gps/ene/type Mono
+/gps/particle gamma
+/gps/ang/type iso
+/gps/pos/centre 0 0 -0.2 cm 
+/gps/ene/type Mono
+/gps/energy 2 eV
+/run/beamOn 1
+/run/beamOn 20

@@ -1,0 +1,9 @@
+# particle
+/gps/number 1
+/gps/particle phononL
+/gps/pos/type Point
+/gps/ang/type iso
+/gps/pos/centre 0.0 0 0 cm # at center
+/gps/ene/type Mono
+/gps/energy 0.03 eV
+/run/beamOn 1

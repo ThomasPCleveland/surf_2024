@@ -1,0 +1,17 @@
+#G4CMP Settings
+/g4cmp/producePhonons 1.0
+/g4cmp/sampleLuke 1.0
+/g4cmp/produceCharges 1.0
+
+# Particle generation
+/gps/number 1
+/gps/particle mu-
+/gps/pos/type Point
+/gps/direction 0 -4 -1
+/gps/pos/centre 0.0 0.5 0.56 cm # A bit above the chip top
+#/gps/pos/centre 0.0 0.1 0.481 cm # halfway between bottom and top of chip (Top of chip is 0.5cm)
+/gps/ene/type Mono
+/gps/energy 4 GeV
+/run/beamOn 1
+
+

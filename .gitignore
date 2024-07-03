@@ -4,11 +4,12 @@
 .env
 *.eps
 History
+KID_DMD
 
 # Ninja
 .ninja_deps
 .ninja_log
-
+build.ninja
 
 # VS Code
 .vscode/*
