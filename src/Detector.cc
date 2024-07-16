@@ -7,6 +7,7 @@
 #include "G4CMPSurfaceProperty.hh"
 #include "G4CMPElectrodeSensitivity.hh"
 
+
 #include "G4Box.hh"
 #include "G4Colour.hh"
 #include "G4FieldManager.hh"
@@ -704,21 +705,32 @@ void Detector::SetupGeometry()
     feedMatTab->AddConstProperty("subgapAbsorption", 0.01);
     feedMatTab->AddConstProperty("filmAbsorption", 0.65);*/
 
-    kidElectrode = new Electrode(indMatTab);
-    kidElectrode->lattice = SiPhysical;
+
+    kidElectrode = new G4CMPPhononElectrode();
+    capElectrode = new G4CMPPhononElectrode();
+    feedElectrode = new G4CMPPhononElectrode();
+
+
+    // kidElectrode = new Electrode(indMatTab);
+    // kidElectrode->lattice = SiPhysical;
     // steppingAction->kidElectrode = kidElectrode;
     indSurf->SetPhononElectrode(kidElectrode);
 
     // capElectrode = new PSElectrode(capMatTab);
-    capElectrode = new Electrode(indMatTab);
-    capElectrode->lattice = SiPhysical;
+    // capElectrode = new Electrode(indMatTab);
+    // capElectrode->lattice = SiPhysical;
     // steppingAction->capElectrode = capElectrode;
     capSurf->SetPhononElectrode(capElectrode);
 
-    feedElectrode = new Electrode(feedMatTab);
-    feedElectrode->lattice = SiPhysical;
+    // feedElectrode = new Electrode(feedMatTab);
+    // feedElectrode->lattice = SiPhysical;
     // steppingAction->feedElectrode = feedElectrode;
     feedSurf->SetPhononElectrode(feedElectrode);
+
+
+
+
+
 
     for (int i = 0; i < numKids; i++)
     {
@@ -735,9 +747,9 @@ void Detector::SetupGeometry()
     new G4CMPLogicalBorderSurface("WorldSurface", SiPhys, physWorld, worldSurf);
     logicWorld->SetVisAttributes(G4VisAttributes::Invisible);
 
-    // G4SDManager *SDman = G4SDManager::GetSDMpointer();
-    // if (!fSuperconductorSensitivity)
-    //     fSuperconductorSensitivity = new RISQ_Sensitivity("PhononElectrode");
-    // SDman->AddNewDetector(fSuperconductorSensitivity);
-    // log_siliconChip->SetSensitiveDetector(fSuperconductorSensitivity);
+    G4SDManager *SDman = G4SDManager::GetSDMpointer();
+    if (!fSuperconductorSensitivity)
+        fSuperconductorSensitivity = new RISQ_Sensitivity("PhononElectrode");
+    SDman->AddNewDetector(fSuperconductorSensitivity);
+    logicTarget->SetSensitiveDetector(fSuperconductorSensitivity);
 }

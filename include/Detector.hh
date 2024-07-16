@@ -19,6 +19,7 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "G4CMPVElectrodePattern.hh"
 #include "G4LatticeManager.hh"
+#include "G4CMPPhononElectrode.hh"
 
 class G4Material;
 class G4VPhysicalVolume;
@@ -52,9 +53,9 @@ private:
   G4CMPSurfaceProperty *feedSurf;
   G4CMPSurfaceProperty *worldSurf;
   G4CMPElectrodeSensitivity* fSuperconductorSensitivity;
-  Electrode *kidElectrode;
-  Electrode *capElectrode;
-  Electrode *feedElectrode;
+  G4CMPPhononElectrode *kidElectrode;
+  G4CMPPhononElectrode *capElectrode;
+  G4CMPPhononElectrode *feedElectrode;
   G4bool fConstructed;
   G4bool fIfField;
 
