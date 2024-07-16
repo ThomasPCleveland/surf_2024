@@ -125,7 +125,7 @@ void RISQ_Sensitivity::SetPrimaryOutputFile(const G4String &fn) {
 
 
 G4bool RISQ_Sensitivity::IsHit(const G4Step* step,
-                                const G4TouchableHistory*) const
+                               const G4TouchableHistory*) const
 {
   
   //Establish track/step information
@@ -134,15 +134,15 @@ G4bool RISQ_Sensitivity::IsHit(const G4Step* step,
   const G4ParticleDefinition* particle = track->GetDefinition();
 
   //-------------------------------------------------------------------
-  //Set criteion for what counts as a "hit" that should be recorded.
-  bool selectTargetVolumes = true;
+  //Set criterion for what counts as a "hit" that should be recorded.
+  bool selectTargetVolumes = false;
 
   //Option one: a phonon that is stopped and killed at a boundary with a
   //nonzero energy deposition.
   G4bool correctParticle = particle == G4PhononLong::Definition() ||
                            particle == G4PhononTransFast::Definition() ||
                            particle == G4PhononTransSlow::Definition();
-  
+
   G4bool correctStatus = step->GetTrack()->GetTrackStatus() == fStopAndKill &&
                          postStepPoint->GetStepStatus() == fGeomBoundary &&
                          step->GetNonIonizingEnergyDeposit() > 0.;

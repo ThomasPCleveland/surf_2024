@@ -77,6 +77,12 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "file": "cpp"
+        "file": "cpp",
+        "strstream": "cpp",
+        "bitset": "cpp",
+        "codecvt": "cpp",
+        "unordered_set": "cpp",
+        "source_location": "cpp",
+        "typeindex": "cpp"
     }
 }
