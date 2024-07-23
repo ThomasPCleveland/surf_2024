@@ -16,6 +16,7 @@
 #include "G4RunManager.hh"
 #include "G4SDManager.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Navigator.hh"
 #include <fstream>
 #include <iostream>
 
@@ -80,6 +81,7 @@ void RISQ_Sensitivity::EndOfEvent(G4HCofThisEvent* HCE) {
                 << hit->GetFinalPosition().getY()/mm << ' '
                 << hit->GetFinalPosition().getZ()/mm << ' '
                 << hit->GetFinalTime()/ns << '\n';
+    
     }
   }
 }
@@ -96,12 +98,14 @@ void RISQ_Sensitivity::SetHitOutputFile(const G4String &fn) {
                   FatalException, msg);
       hitOutput.close();
     } else {
-      hitOutput << "Run ID,Event ID,Track ID,Particle Name,Start Energy [eV],"
-		<< "Start X [mm],Start Y [mm],Start Z [mm],Start Time [ns],"
-		<< "Energy Deposited [eV],Track Weight,End X [mm],End Y [mm],End Z [mm],"
-		<< "Final Time [ns],Volume Name\n";
+      hitOutput << "run_id event_id track_id particle start_energy_[eV] "
+		<< "start_x_[mm] start_y_[mm] start_z_[mm] start_t_[ns] "
+		<< "energy_deposit_[eV] track_weight end_x_[mm] end_y_[mm] end_z_[mm] "
+		<< "end_t_[ns] volume\n";
     }
   }
+
+  // need to write to `volume_hits.log` first line with header information
 }
 
 
@@ -117,8 +121,8 @@ void RISQ_Sensitivity::SetPrimaryOutputFile(const G4String &fn) {
                   FatalException, msg);
       primaryOutput.close();
     } else {
-      primaryOutput << "Run ID,Event ID,Particle Name,Start Energy [eV],"
-		    << "Start X [mm],Start Y [mm],Start Z [mm],Start Time [ns]\n";
+      primaryOutput << "run_id event_id event_id particle start_energy_[eV] "
+		    << "start_x_[mm] start_y_[mm] start_z_[mm] start_t_[ns]\n";
     }
   }
 }
@@ -143,11 +147,23 @@ G4bool RISQ_Sensitivity::IsHit(const G4Step* step,
                            particle == G4PhononTransFast::Definition() ||
                            particle == G4PhononTransSlow::Definition();
 
-  G4bool correctStatus = step->GetTrack()->GetTrackStatus() == fStopAndKill &&
-                         postStepPoint->GetStepStatus() == fGeomBoundary &&
-                         step->GetNonIonizingEnergyDeposit() > 0.;
+  G4TrackStatus status = step->GetTrack()->GetTrackStatus();
+  G4StepStatus stepStatus = postStepPoint->GetStepStatus();
+  G4double energyDeposit = step->GetNonIonizingEnergyDeposit();
 
-  G4bool landedOnTargetSurface = (postStepPoint->GetPhysicalVolume()->GetName().find("shuntConductor") != std::string::npos);
+  G4bool correctStatus = status == fStopAndKill &&
+                        stepStatus == fGeomBoundary &&
+                        energyDeposit > 0;
+
+  G4String volumeName = postStepPoint->GetPhysicalVolume()->GetName();
+  G4bool landedOnTargetSurface = (volumeName.find("kid_ind") != std::string::npos);
+
+  if (correctParticle && correctStatus) {
+    std::ofstream hitsLog;
+    hitsLog.open("volume_hits.log", std::ios_base::app);
+    hitsLog << step->GetTrack()->GetTrackID() << ' ' << volumeName << '\n';
+    hitsLog.close();
+  }
 
   //Now select which critera matter:
   //Option one: a phonon that is stopped and killed at a boundary with a
@@ -159,4 +175,7 @@ G4bool RISQ_Sensitivity::IsHit(const G4Step* step,
   //in this tutorial's geometry is one of the qubit crosses. (Can also just put this info in
   //the output file and sort through this in analysis, but this helps us minimize output filesize.)
   else{ return correctParticle && correctStatus && landedOnTargetSurface; }
+
+  
+  
 }

@@ -1,9 +1,16 @@
 # particle
 /gps/number 1
 /gps/particle gamma
-/gps/pos/type Point
-/gps/ang/type iso
-/gps/pos/centre 0 0 -0.2 cm 
 /gps/ene/type Mono
 /gps/energy 2 eV
+
+/gps/pos/type Plane
+/gps/pos/shape Circle
+/gps/pos/centre 0 0 -2 cm 
+/gps/pos/radius 38.5 mm
+
+/gps/ang/type focused
+# /gps/ang/type beam1d
+# /gps/ang/sigma_r 45 deg
+
 /run/beamOn 1

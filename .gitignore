@@ -5,6 +5,7 @@
 *.eps
 History
 KID_DMD
+to_do.text
 
 # Ninja
 .ninja_deps

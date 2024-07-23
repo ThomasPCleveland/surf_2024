@@ -14,7 +14,7 @@ Config_Manager *Config_Manager::Instance()
 
 Config_Manager::Config_Manager()
     : Hit_file(getenv("G4CMP_HIT_FILE") ? getenv("G4CMP_HIT_FILE") : "hits.log"),
-      Primary_file("primary.log"),
+      Primary_file("primaries.log"),
       messenger(new Config_Messenger(this)) { ; }
 
 Config_Manager::~Config_Manager()
