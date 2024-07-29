@@ -17,4 +17,4 @@
 /gps/ang/sigma_r 45 deg
 
 
-/run/beamOn 1
+/run/beamOn 100000

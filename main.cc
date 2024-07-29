@@ -3,6 +3,8 @@
 #include "Physics_List.hh"
 #include "Config_Manager.hh"
 #include "Detector.hh"
+#include "Single_KID.hh"
+#include "RISQ_Detector.hh"
 #include "Action_Initialization.hh"
 
 #include "G4RunManager.hh"
@@ -35,8 +37,18 @@
 
 int main(int argc, char **argv)
 {
+  {
+    std::remove("volume_hits.log");
+    std::ofstream hitsLog;
+    hitsLog.open("volume_hits.log", std::ios_base::app);
+    hitsLog << "run event track particle energy deposit x y z t_i t_f volume\n";
+    hitsLog.close();
+  }
+
   G4RunManager *runManager = new G4RunManager;
-  Detector *detector = new Detector();
+  // Detector *detector = new Detector();
+  // Single_KID *detector = new Single_KID();
+  RISQ_Detector *detector = new RISQ_Detector();
   runManager->SetUserInitialization(detector);
   Physics_List *physics = new Physics_List();
   runManager->SetUserInitialization(physics);

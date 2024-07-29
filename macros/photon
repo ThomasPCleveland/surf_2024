@@ -6,7 +6,7 @@
 
 /gps/pos/type Plane
 /gps/pos/shape Circle
-/gps/pos/centre 0 0 -2 cm 
+/gps/pos/centre 0 0 -1 cm 
 /gps/pos/radius 38.5 mm
 
 /gps/ang/type focused

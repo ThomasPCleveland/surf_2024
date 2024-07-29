@@ -47,6 +47,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config_Manager.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config_Messenger.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Detector.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Single_KID.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/RISQ_Detector.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Electrode.cc
     # ${CMAKE_CURRENT_SOURCE_DIR}/src/Event_Action.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Kaplan_QP.cc

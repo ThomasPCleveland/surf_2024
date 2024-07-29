@@ -27,10 +27,10 @@ Physics_List::Physics_List(G4int verbosity) : G4VModularPhysicsList()
         G4cout << "G4CMPPhysicsList::constructor" << G4endl;
     defaultCutValue = DBL_MIN; // 100*mm;
 
-    verbosity = 0;
+    verbosity = 1;
     RegisterPhysics(new G4CMPPhysics);
     RegisterPhysics(new G4EmStandardPhysics(verbosity));
-    RegisterPhysics(new G4OpticalPhysics(verbosity));
+    // RegisterPhysics(new G4OpticalPhysics(verbosity));
     SetCuts();
 
     // RegisterPhysics(new G4EmExtraPhysics(verbosity));

@@ -1,0 +1,14 @@
+/run/initialize
+/tracking/verbose 0
+/run/printProgress 100
+
+# particle
+/gps/number 1
+/gps/particle phononL
+/gps/pos/type Point
+/gps/ang/type iso
+/gps/pos/centre 0.0 0 0 cm # at center
+/gps/ene/type Mono
+/gps/energy 1 eV
+
+/run/beamOn 1
