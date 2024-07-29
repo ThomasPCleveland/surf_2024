@@ -6,7 +6,8 @@
 History
 KID_DMD
 to_do.text
-analaysis/data/
+analysis/data/*
+
 
 # Ninja
 .ninja_deps
