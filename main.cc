@@ -38,10 +38,13 @@
 int main(int argc, char **argv)
 {
   {
-    std::remove("volume_hits.log");
+    G4String filename = "hits.csv"; // logging is hardcoded in RISQ_Sensitivity.cc
+    std::remove(filename);
     std::ofstream hitsLog;
-    hitsLog.open("volume_hits.log", std::ios_base::app);
-    hitsLog << "run event track particle energy deposit x y z t_i t_f volume\n";
+    hitsLog.open(filename, std::ios_base::app);
+    hitsLog << "run,event,track,type,volume," 
+            << "e_i,x_i,y_i,z_i,t_i,"
+            << "e_dep,x_f,y_f,z_f,t_f\n";
     hitsLog.close();
   }
 

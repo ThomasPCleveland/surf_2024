@@ -7,6 +7,7 @@ History
 KID_DMD
 to_do.text
 analysis/data/*
+build/*.csv
 
 
 # Ninja

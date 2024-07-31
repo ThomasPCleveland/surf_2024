@@ -58,14 +58,14 @@ void RISQ_Sensitivity::EndOfEvent(G4HCofThisEvent *HCE)
   // Do primary output writing to file
   if (primaryOutput.good())
   {
-    primaryOutput << runMan->GetCurrentRun()->GetRunID() << " "
-                  << runMan->GetCurrentEvent()->GetEventID() << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName() << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetPrimary()->GetTotalEnergy() / eV << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetX0() / mm << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetY0() / mm << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetZ0() / mm << " "
-                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetT0() / ns << "\n";
+    primaryOutput << runMan->GetCurrentRun()->GetRunID() << ","                                                                     // run
+                  << runMan->GetCurrentEvent()->GetEventID() << ","                                                                 // event
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName() << "," // particle
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetPrimary()->GetTotalEnergy() / eV << ","                      // e_i
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetX0() / mm << ","                                             // x_i
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetY0() / mm << ","                                             // y_i
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetZ0() / mm << ","                                             // z_i
+                  << runMan->GetCurrentEvent()->GetPrimaryVertex()->GetT0() / ns << "\n";                                           // t_i
   }
 
   // Do hit output writing to file
@@ -73,21 +73,21 @@ void RISQ_Sensitivity::EndOfEvent(G4HCofThisEvent *HCE)
   {
     for (G4CMPElectrodeHit *hit : *hitVec)
     {
-      hitOutput << runMan->GetCurrentRun()->GetRunID() << ' '
-                << runMan->GetCurrentEvent()->GetEventID() << ' '
-                << hit->GetTrackID() << ' '
-                << hit->GetParticleName() << ' '
-                << hit->GetStartEnergy() / eV << ' '
-                << hit->GetStartPosition().getX() / mm << ' '
-                << hit->GetStartPosition().getY() / mm << ' '
-                << hit->GetStartPosition().getZ() / mm << ' '
-                << hit->GetStartTime() / ns << ' '
-                << hit->GetEnergyDeposit() / eV << ' '
-                << hit->GetWeight() << ' '
-                << hit->GetFinalPosition().getX() / mm << ' '
-                << hit->GetFinalPosition().getY() / mm << ' '
-                << hit->GetFinalPosition().getZ() / mm << ' '
-                << hit->GetFinalTime() / ns << '\n';
+      hitOutput << runMan->GetCurrentRun()->GetRunID() << ','     // run
+                << runMan->GetCurrentEvent()->GetEventID() << ',' // event
+                << hit->GetTrackID() << ','                       // track
+                << hit->GetParticleName() << ','                  // type
+                << hit->GetStartEnergy() / eV << ','              // e_i
+                << hit->GetStartPosition().getX() / mm << ','     // x_i
+                << hit->GetStartPosition().getY() / mm << ','     // y_i
+                << hit->GetStartPosition().getZ() / mm << ','     // z_i
+                << hit->GetStartTime() / ns << ','                // t_i
+                << hit->GetEnergyDeposit() / eV << ','            // e_dep
+                // << hit->GetWeight() << ','
+                << hit->GetFinalPosition().getX() / mm << ',' // x_f
+                << hit->GetFinalPosition().getY() / mm << ',' // y_f
+                << hit->GetFinalPosition().getZ() / mm << ',' // z_f
+                << hit->GetFinalTime() / ns << '\n';          // t_f
     }
   }
 }
@@ -110,10 +110,9 @@ void RISQ_Sensitivity::SetHitOutputFile(const G4String &fn)
     }
     else
     {
-      hitOutput << "run event track particle start_energy_[eV] "
-                << "start_x_[mm] start_y_[mm] start_z_[mm] start_t_[ns] "
-                << "energy_deposit_[eV] track_weight end_x_[mm] end_y_[mm] end_z_[mm] "
-                << "end_t_[ns]\n";
+      hitOutput << "run,event,track,type," // note:  removed `weight`
+                << "e_i,x_i,y_i,z_i,t_i,"
+                << "e_dep,x_f,y_f,z_f,t_f\n";
     }
   }
 
@@ -138,8 +137,8 @@ void RISQ_Sensitivity::SetPrimaryOutputFile(const G4String &fn)
     }
     else
     {
-      primaryOutput << "run event particle energy_[eV] "
-                    << "start_x_[mm] start_y_[mm] start_z_[mm] start_t_[ns]\n";
+      primaryOutput << "run,event,type,"
+                    << "e_i,x_i,y_i,z_i,t_i\n";
     }
   }
 }
@@ -178,19 +177,23 @@ G4bool RISQ_Sensitivity::IsHit(const G4Step *step,
   if (correctParticle && status == fStopAndKill && stepStatus == fGeomBoundary)
   {
     std::ofstream hitsLog;
-    hitsLog.open("volume_hits.log", std::ios_base::app);
-    hitsLog << runMan->GetCurrentRun()->GetRunID() << ' '
-            << runMan->GetCurrentEvent()->GetEventID() << ' '
-            << track->GetTrackID() << ' '
-            << track->GetParticleDefinition()->GetParticleName() << ' '
-            << track->GetTotalEnergy() / eV << ' '
-            << step->GetTotalEnergyDeposit() / eV << ' '
-            << step->GetPostStepPoint()->GetPosition().getX() / mm << ' '
-            << step->GetPostStepPoint()->GetPosition().getY() / mm << ' '
-            << step->GetPostStepPoint()->GetPosition().getZ() / mm << ' '
-            << step->GetPreStepPoint()->GetGlobalTime() / ns << ' '
-            << step->GetPostStepPoint()->GetGlobalTime() / ns << ' '
-            << volumeName << '\n';
+    hitsLog.open("hits.csv", std::ios_base::app);                                            // header is hardcoded in main.cc
+    hitsLog << runMan->GetCurrentRun()->GetRunID() << ','                                    // run
+            << runMan->GetCurrentEvent()->GetEventID() << ','                                // event
+            << track->GetTrackID() << ','                                                    // track
+            << track->GetParticleDefinition()->GetParticleName() << ','                      // type
+            << volumeName << ','                                                             // volume
+            << track->GetVertexKineticEnergy() / eV << ','                                   // e_i
+            << track->GetVertexPosition().getX() / mm << ','                                 // x_i
+            << track->GetVertexPosition().getY() / mm << ','                                 // y_i
+            << track->GetVertexPosition().getZ() / mm << ','                                 // z_i
+            << step->GetPostStepPoint()->GetGlobalTime() - track->GetLocalTime() / ns << ',' // t_i
+            << step->GetNonIonizingEnergyDeposit() / eV << ','                               // e_dep
+            << step->GetPostStepPoint()->GetPosition().getX() / mm << ','                    // x_f
+            << step->GetPostStepPoint()->GetPosition().getY() / mm << ','                    // y_f
+            << step->GetPostStepPoint()->GetPosition().getZ() / mm << ','                    // z_f
+            << step->GetPostStepPoint()->GetGlobalTime() / ns << '\n';                       // t_f
+
     hitsLog.close();
   }
 
