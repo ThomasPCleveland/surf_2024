@@ -1,14 +1,19 @@
 /run/initialize
 /tracking/verbose 0
-/run/printProgress 100
+/run/printProgress 1000
 
 # particle
 /gps/number 1
 /gps/particle phononL
-/gps/pos/type Point
-/gps/ang/type iso
-/gps/pos/centre 0.0 0 0 cm # at center
 /gps/ene/type Mono
-/gps/energy 1 eV
+/gps/energy 2.2 eV
+
+/gps/pos/type Plane
+/gps/pos/shape Circle
+/gps/pos/centre 0 0 -0.4999 mm 
+/gps/pos/radius 38.5 mm
+
+/gps/ang/type beam1d
+/gps/ang/sigma_r 45 deg
 
 /run/beamOn 1
