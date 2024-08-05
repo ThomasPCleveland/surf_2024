@@ -787,19 +787,22 @@ void RISQ_Detector::AttachPhononSensor(G4CMPSurfaceProperty *surfProp)
   if (!surfProp)
     return;
 
-  // Specify properties of the niobium sensors
+   // Specify properties of the niobium sensors
   auto sensorProp = surfProp->GetPhononMaterialPropertiesTablePointer();
-  sensorProp->AddConstProperty("filmAbsorption", 0.0);                  // NOT WELL MOTIVATED - probably parametrize and put on slider?
+  sensorProp->AddConstProperty("filmAbsorption", 0.8);                  // NOT WELL MOTIVATED - probably parametrize and put on slider?
   sensorProp->AddConstProperty("filmThickness", 90. * CLHEP::nm);       // Accurate for our thin film.
   sensorProp->AddConstProperty("gapEnergy", 1.6e-3 * CLHEP::eV);        // Reasonably motivated. Actually, looks like Novotny and Meincke are quoting 2Delta, and this is delta. Nuss and Goossen mention that Nb has a delta value closer to this.
   sensorProp->AddConstProperty("lowQPLimit", 3.);                       // NOT WELL MOTIVATED YET -- Dunno how to inform this...
   sensorProp->AddConstProperty("phononLifetime", 4.17 * CLHEP::ps);     // Kaplan paper says 242ps for Al, same table says 4.17ps for characteristic time for Nb.
   sensorProp->AddConstProperty("phononLifetimeSlope", 0.29);            // Based on guessing from Kaplan paper, I think this is material-agnostic?
   sensorProp->AddConstProperty("vSound", 3.480 * CLHEP::km / CLHEP::s); // True for room temperature, probably good to 10%ish - should follow up
-  sensorProp->AddConstProperty("subgapAbsorption", 0.0);                // Assuming that since we're mostly sensitive to quasiparticle density, phonon "heat" here isn't something that we're sensitive to? Unsure how to select this.
+  sensorProp->AddConstProperty("subgapAbsorption", 0.8);                // Assuming that since we're mostly sensitive to quasiparticle density, phonon "heat" here isn't something that we're sensitive to? Unsure how to select this.
 
   //  sensorProp->AddConstProperty("gapEnergy",3.0e-3*CLHEP::eV);      //Reasonably motivated. Novotny and Meincke, 1975 (2.8-3.14 meV)
   //  sensorProp->AddConstProperty("phononLifetime",242.*ps);      //Kaplan paper says 242ps for Al, same table says 4.17ps for characteristic time for Nb.
 
   surfProp->SetPhononElectrode(new G4CMPPhononElectrode);
 }
+
+
+// TODO: Reflection properties
